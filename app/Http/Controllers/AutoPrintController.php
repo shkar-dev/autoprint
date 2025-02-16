@@ -26,7 +26,7 @@ class AutoPrintController extends Controller
         // Generate a unique filename for the uploaded image
         $filename = time() . '.'.  explode('/', $image->getMimeType())[1];
 
-        // Move the image to the public/images folder
+        // Move the image to the public/images.blade.php folder
 
         $uploadImage = UploadedImage::create([
             'name' => $filename,
@@ -54,9 +54,32 @@ class AutoPrintController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function uploadMultipleImage(Request $request)
     {
-        //
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg',
+        ]);
+//        $path = $request->file('image')->store('uploads', 'public');
+
+        // Get the uploaded file
+        $image = $request->file('image');
+
+        // Generate a unique filename for the uploaded image
+        $filename = time() . '.'.  explode('/', $image->getMimeType())[1];
+
+        // Move the image to the public/images.blade.php folder
+
+        $uploadImage = UploadedImage::create([
+            'name' => $filename,
+            'user_session_id' => session()->getId(),
+        ]);
+
+        if ($uploadImage) {
+            $image->move(public_path(), $filename);
+            dispatch(new PrintImageJob( $filename));
+            return back()->with('success', 'Image uploaded successfully! It will be printed in 10 seconds.');
+        }
+        return back()->with('failed', 'error while uploading image!');
     }
 
     /**

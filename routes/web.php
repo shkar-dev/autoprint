@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 Route::get('/index',  [AutoPrintController::class, 'index'])->name('index');
 Route::post('uploadImage', [AutoPrintController::class, 'uploadImage'])->name('uploadImage');
+//Route::post('uploadMultipleImage', [AutoPrintController::class, 'uploadMultipleImage'])->name('uploadMultipleImage');
