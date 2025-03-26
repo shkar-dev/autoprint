@@ -21,7 +21,12 @@
         <h2>زیادکردنی وینە </h2>
         <form action="{{ route('uploadImage') }}" enctype="multipart/form-data" method="post">
             @csrf
-            <input type="file" name="image" class="form-control" id="upload_input" >
+            <select name="choice" class="form-control my-2" id="choice">
+                <option disabled selected>جۆری وێنە دیاریبکە</option>
+                <option value="document">وێنە</option>
+                <option value="card">ناسنامە</option>
+            </select>
+            <input type="file" name="image[]" class="form-control" id="upload_input" multiple >
             <button class="btn btn-primary upload_btn" type="submit"> زیادکردن <i class="fa fa-cloud-arrow-up" ></i></button>
         </form>
          <div class="processed-image">
@@ -37,10 +42,13 @@
                 </div>
             </div>
         @endforeach
-
         </div>
     </div>
+    <script>
+        var file = document.getElementById('upload_input');
+        var choice = document.getElementById('choice');
 
+    </script>
 {{--    <script>--}}
 {{--        let timeLeft = 10; // Start countdown from 10 seconds--}}
 {{--        let countdownElement = document.getElementById("countdown");--}}
